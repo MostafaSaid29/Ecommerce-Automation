@@ -1,9 +1,14 @@
 package pages;
 
+import org.openqa.selenium.JavascriptException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import static util.TestUtil.explicitWait;
+import static util.TestUtil.handleAlert;
 
 public class ProductPage {
     WebDriver driver;
@@ -11,14 +16,28 @@ public class ProductPage {
     WebElement addToCart;
     @FindBy(partialLinkText = "Home")
     WebElement Home;
+    @FindBy(xpath = "//h3[@class='price-container']")
+    WebElement priceElement;
     public ProductPage(WebDriver driver)
     {
         this.driver = driver;
         PageFactory.initElements(driver,this);
     }
+    public int getPrice()
+    {
+        String priceText = priceElement.getText().split("\\*")[0].trim();
+        String price = priceText.replace("$","");
+        return Integer.parseInt(price);
+    }
     public void clickAddToCartBtn()
     {
-        addToCart.click();
+        try{
+            explicitWait(driver,addToCart);
+            addToCart.click();
+        }catch (Exception e){
+            System.out.println("Couldn't find Add to Cart Button");
+        }
+
     }
     public void returnHome()
     {
@@ -26,10 +45,6 @@ public class ProductPage {
     }
     public String alertMsg()
     {
-        return driver.switchTo().alert().getText();
-    }
-    public void acceptAlert()
-    {
-        driver.switchTo().alert().accept();
+        return handleAlert(driver);
     }
 }

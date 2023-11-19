@@ -1,18 +1,15 @@
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import util.TestUtil;
+import pages.BaseClass;
 
-import java.io.IOException;
-
-public class LoginPageTest extends BaseClassTest {
-
-    @Test(dataProvider = "LoginData")
-    public void login(String username,String password) throws InterruptedException {
+public class LoginPageTest extends BaseClass {
+    @Test
+    public void login() throws InterruptedException {
+        String username,password;
+        username = excel[0][0];
+        password = excel[0][1];
         loginPage = homePage.goToLoginPage();
         loginPage.logInSteps(username,password);
-        Thread.sleep(2000);
         Assert.assertEquals(loginPage.validateLogin(),"Welcome " + username);
     }
 

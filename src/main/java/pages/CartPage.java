@@ -1,14 +1,17 @@
 package pages;
-
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import util.TestUtil;
 
-public class CartPage {
+import static util.TestUtil.explicitWait;
+
+
+public class CartPage extends BaseClass {
     WebDriver driver;
-    @FindBy(xpath = "//button[text()='Place Order']")
-    WebElement orderBtn;
     @FindBy(id = "name")
     WebElement nameField;
     @FindBy(id = "country")
@@ -25,7 +28,10 @@ public class CartPage {
     WebElement purchaseBtn;
     @FindBy(xpath = "//h2[text()='Thank you for your purchase!']")
     WebElement alert;
-
+    @FindBy(xpath = "//button[text()='Place Order']")
+    WebElement orderBtn;
+    @FindBy(xpath = "//h3[@id='totalp']")
+    WebElement totalPrice;
     public CartPage(WebDriver driver)
     {
         this.driver = driver;
@@ -33,20 +39,32 @@ public class CartPage {
     }
     public void pressOrderBtn()
     {
-        orderBtn.click();
+        try{
+            explicitWait(driver,orderBtn);
+            orderBtn.click();
+        }catch (Exception e)
+        {
+            System.out.println("Couldn't find Place Order Button");
+        }
     }
     public void sendData(String username)
     {
-        nameField.sendKeys(username);
-        countryField.sendKeys("Egypt");
-        cityField.sendKeys("Alex");
-        cardField.sendKeys("123");
-        monthField.sendKeys("10");
-        yearField.sendKeys("2023");
+        TestUtil.sendKeys(driver,nameField,username);
+        TestUtil.sendKeys(driver,countryField,"Egypt");
+        TestUtil.sendKeys(driver,cityField,"Alex");
+        TestUtil.sendKeys(driver,cardField,"123");
+        TestUtil.sendKeys(driver,monthField,"10");
+        TestUtil.sendKeys(driver,yearField,"2023");
+        explicitWait(driver,purchaseBtn);
         purchaseBtn.click();
+    }
+    public int getTotalPrice()
+    {
+        explicitWait(driver,totalPrice);
+        return Integer.parseInt(totalPrice.getText());
     }
     public String alertMsg()
     {
-        return alert.getText();
+        return alert.getText().trim();
     }
 }

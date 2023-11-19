@@ -1,14 +1,17 @@
+package pages;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
-import pages.*;
 import util.TestUtil;
 
 import java.io.IOException;
 import java.time.Duration;
 
-public class BaseClassTest {
+public class BaseClass {
     protected static WebDriver driver;
     protected HomePage homePage;
     protected SignUpPage signUpPage;
@@ -17,29 +20,26 @@ public class BaseClassTest {
     protected ProductPage Laptop;
     protected ProductPage Monitor;
     protected CartPage cartPage;
-    @Parameters({"URL"})
+    public static String[][] excel;
+    public static int totalPrice = 0;
     @BeforeSuite
-    public void setUp(String url)
+    public void setUp()
     {
-        //Create a New Object of WebDriver
         WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver();
-
-        // Navigate to website, maximize window
-        driver.get(url);
+        driver.get("https://www.demoblaze.com/index.html");
         driver.manage().window().maximize();
 
     }
     @BeforeMethod
-    public void initialization()
-    {
+    public void initialization(){
         homePage = new HomePage(driver);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
-    @DataProvider(name = "LoginData")
+    @DataProvider(name = "SignUpData")
     public String[][] getData() throws IOException
     {
-        return TestUtil.getDataFromExcel();
+        excel = TestUtil.getDataFromExcel();
+        return excel;
     }
     @AfterSuite
     public void tearDown()

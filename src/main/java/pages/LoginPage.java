@@ -4,6 +4,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import util.TestUtil;
+
+import static util.TestUtil.explicitWait;
 
 public class LoginPage {
     WebDriver driver;
@@ -17,18 +21,20 @@ public class LoginPage {
         PageFactory.initElements(driver,this);
     }
     public void setUserName(String username){
-
-        usernameField.sendKeys(username);
+        TestUtil.sendKeys(driver,usernameField,username);
     }
     public void setPassword(String password){
-
-        passwordField.sendKeys(password);
-
+        TestUtil.sendKeys(driver,passwordField,password);
     }
 
     public void clickLogIn(){
-
-        loginBtn.click();
+        try{
+            explicitWait(driver,loginBtn);
+            loginBtn.click();
+        }catch (Exception e)
+        {
+            System.out.println("Couldn't find login Button");
+        }
 
     }
     public void logInSteps(String username, String password)
@@ -39,6 +45,7 @@ public class LoginPage {
     }
     public String validateLogin()
     {
+        explicitWait(driver,user);
         return user.getText();
     }
 }
