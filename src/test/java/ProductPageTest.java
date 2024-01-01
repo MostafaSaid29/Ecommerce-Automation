@@ -10,6 +10,7 @@ public class ProductPageTest extends BaseClass {
         Phone.clickAddToCartBtn();
         Assert.assertEquals(Phone.alertMsg(),"Product added.");
         totalPrice += Phone.getPrice();
+        NumberOfProducts++;
         Phone.returnHome();
     }
     @Test(priority = 2)
@@ -18,6 +19,7 @@ public class ProductPageTest extends BaseClass {
         Laptop.clickAddToCartBtn();
         Assert.assertEquals(Laptop.alertMsg(),"Product added.");
         totalPrice += Laptop.getPrice();
+        NumberOfProducts++;
         Laptop.returnHome();
     }
     @Test(priority = 3)
@@ -26,6 +28,7 @@ public class ProductPageTest extends BaseClass {
         Monitor.clickAddToCartBtn();
         Assert.assertEquals(Monitor.alertMsg(),"Product added.");
         totalPrice += Monitor.getPrice();
+        NumberOfProducts++;
         Monitor.returnHome();
     }
 }

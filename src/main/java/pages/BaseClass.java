@@ -4,10 +4,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 import util.TestUtil;
-
 import java.io.IOException;
 import java.time.Duration;
 
@@ -22,14 +20,14 @@ public class BaseClass {
     protected CartPage cartPage;
     public static String[][] excel;
     public static int totalPrice = 0;
+    public static int NumberOfProducts = 0;
     @BeforeSuite
     public void setUp()
     {
-        WebDriverManager.firefoxdriver().setup();
-        driver = new FirefoxDriver();
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
         driver.get("https://www.demoblaze.com/index.html");
         driver.manage().window().maximize();
-
     }
     @BeforeMethod
     public void initialization(){

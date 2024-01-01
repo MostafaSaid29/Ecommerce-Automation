@@ -5,42 +5,38 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import util.TestUtil;
 
-import static util.TestUtil.explicitWait;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
+import static util.TestUtil.*;
 
 
 public class CartPage extends BaseClass {
     WebDriver driver;
-    @FindBy(id = "name")
-    WebElement nameField;
-    @FindBy(id = "country")
-    WebElement countryField;
-    @FindBy(id = "city")
-    WebElement cityField;
-    @FindBy(id = "card")
-    WebElement cardField;
-    @FindBy(id = "month")
-    WebElement monthField;
-    @FindBy(id = "year")
-    WebElement yearField;
-    @FindBy(xpath = "//button[text()='Purchase']")
-    WebElement purchaseBtn;
-    @FindBy(xpath = "//h2[text()='Thank you for your purchase!']")
-    WebElement alert;
-    @FindBy(xpath = "//button[text()='Place Order']")
-    WebElement orderBtn;
-    @FindBy(xpath = "//h3[@id='totalp']")
-    WebElement totalPrice;
+    By tableLocator = By.id("tbodyid");
+    By childLocator = By.xpath("//tbody[@id= \"tbodyid\"]/tr");
+    By nameLocator = By.id("name");
+    By countryLocator = By.id("country");
+    By cityLocator = By.id("city");
+    By cardLocator = By.id("card");
+    By monthLocator = By.id("month");
+    By yearLocator = By.id("year");
+    By purchaseBtnLocator = By.xpath("//button[text()='Purchase']");
+    By alertLocator = By.xpath("//h2[text()='Thank you for your purchase!']");
+    By orderBtnLocator = By.xpath("//button[text()='Place Order']");
+    By totalPriceLocator = By.xpath("//h3[@id='totalp']");
     public CartPage(WebDriver driver)
     {
         this.driver = driver;
-        PageFactory.initElements(driver,this);
     }
     public void pressOrderBtn()
     {
         try{
-            explicitWait(driver,orderBtn);
+            WebElement orderBtn = explicitWait(driver,orderBtnLocator);
             orderBtn.click();
         }catch (Exception e)
         {
@@ -49,22 +45,40 @@ public class CartPage extends BaseClass {
     }
     public void sendData(String username)
     {
-        TestUtil.sendKeys(driver,nameField,username);
-        TestUtil.sendKeys(driver,countryField,"Egypt");
-        TestUtil.sendKeys(driver,cityField,"Alex");
-        TestUtil.sendKeys(driver,cardField,"123");
-        TestUtil.sendKeys(driver,monthField,"10");
-        TestUtil.sendKeys(driver,yearField,"2023");
-        explicitWait(driver,purchaseBtn);
+        sendKeys(driver,nameLocator,username);
+        sendKeys(driver,countryLocator,"Egypt");
+        sendKeys(driver,cityLocator,"Alex");
+        sendKeys(driver,cardLocator,"123");
+        sendKeys(driver,monthLocator,"10");
+        sendKeys(driver,yearLocator,"2023");
+        WebElement purchaseBtn = explicitWait(driver,purchaseBtnLocator);
         purchaseBtn.click();
     }
     public int getTotalPrice()
     {
-        explicitWait(driver,totalPrice);
+        WebElement totalPrice = explicitWait(driver,totalPriceLocator);
         return Integer.parseInt(totalPrice.getText());
+    }
+    public int getProducts(){
+        //WebElement table = explicitWait(driver,tableLocator);
+        List<String> childName = new ArrayList<>();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait.until(ExpectedConditions.presenceOfElementLocated(childLocator));
+        List<WebElement> child = driver.findElements(childLocator);
+        return child.size();
+        /*
+        System.out.println(child.size());
+        for(int i = 1 ; i < child.size()+1; i++)
+        {
+            System.out.println(i);
+            WebElement x = driver.findElement(By.xpath("(//tbody[@id= \"tbodyid\"]/tr/td[2])["+i+"]"));
+            childName.add(x.getText());
+        }
+        System.out.println(childName);*/
     }
     public String alertMsg()
     {
+        WebElement alert = explicitWait(driver,alertLocator);
         return alert.getText().trim();
     }
 }

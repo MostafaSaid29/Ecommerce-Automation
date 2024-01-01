@@ -13,10 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -43,14 +40,14 @@ public class TestUtil {
         }
         return tabArray;
     }
-    public static void explicitWait(WebDriver driver, WebElement ele)
+    public static WebElement explicitWait(WebDriver driver, By locator)
     {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        wait.until(ExpectedConditions.elementToBeClickable(ele));
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
-    public static void sendKeys(WebDriver driver, WebElement ele, String txt)
+    public static void sendKeys(WebDriver driver, By locator, String txt)
     {
-        TestUtil.explicitWait(driver, ele);
+        WebElement ele = explicitWait(driver,locator);
         ele.clear();
         ele.sendKeys(txt);
     }

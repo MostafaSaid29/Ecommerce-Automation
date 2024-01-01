@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,31 +12,24 @@ import static util.TestUtil.explicitWait;
 
 public class LoginPage {
     WebDriver driver;
-    @FindBy(id = "loginusername") WebElement usernameField;
-    @FindBy(id= "loginpassword") WebElement passwordField;
-    @FindBy(xpath = "//button[text()='Log in']") WebElement loginBtn;
-    @FindBy(id = "nameofuser") WebElement user;
+    By usernameLocator = By.id("loginusername");
+    By passowrdLocator = By.id("loginpassword");
+    By loginBtnLocator = By.xpath("//button[text()='Log in']");
+    By userLocator = By.id("nameofuser");
     public LoginPage(WebDriver driver)
     {
         this.driver = driver;
-        PageFactory.initElements(driver,this);
     }
     public void setUserName(String username){
-        TestUtil.sendKeys(driver,usernameField,username);
+        TestUtil.sendKeys(driver,usernameLocator,username);
     }
     public void setPassword(String password){
-        TestUtil.sendKeys(driver,passwordField,password);
+        TestUtil.sendKeys(driver,passowrdLocator,password);
     }
 
     public void clickLogIn(){
-        try{
-            explicitWait(driver,loginBtn);
+            WebElement loginBtn = explicitWait(driver,loginBtnLocator);
             loginBtn.click();
-        }catch (Exception e)
-        {
-            System.out.println("Couldn't find login Button");
-        }
-
     }
     public void logInSteps(String username, String password)
     {
@@ -45,7 +39,7 @@ public class LoginPage {
     }
     public String validateLogin()
     {
-        explicitWait(driver,user);
+        WebElement user = explicitWait(driver,userLocator);
         return user.getText();
     }
 }

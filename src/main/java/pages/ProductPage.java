@@ -1,39 +1,39 @@
 package pages;
 
-import org.openqa.selenium.JavascriptException;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import static util.TestUtil.explicitWait;
 import static util.TestUtil.handleAlert;
 
 public class ProductPage {
     WebDriver driver;
-    @FindBy(partialLinkText = "Add to cart")
-    WebElement addToCart;
-    @FindBy(partialLinkText = "Home")
-    WebElement Home;
-    @FindBy(xpath = "//h3[@class='price-container']")
-    WebElement priceElement;
+    By addCartLocator = By.partialLinkText("Add to cart");
+    By homeLocator = By.partialLinkText("Home");
+    By priceLocator = By.xpath("//h3[@class='price-container']");
     public ProductPage(WebDriver driver)
     {
         this.driver = driver;
-        PageFactory.initElements(driver,this);
     }
     public int getPrice()
     {
-        String priceText = priceElement.getText().split("\\*")[0].trim();
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(20));
+        WebElement priceEle = wait.until(ExpectedConditions.elementToBeClickable(priceLocator));
+        String priceText = priceEle.getText().split("\\*")[0].trim();
         String price = priceText.replace("$","");
         return Integer.parseInt(price);
     }
     public void clickAddToCartBtn()
     {
         try{
-            explicitWait(driver,addToCart);
-            addToCart.click();
+            WebElement add2CartBtn = explicitWait(driver,addCartLocator);
+            add2CartBtn.click();
         }catch (Exception e){
             System.out.println("Couldn't find Add to Cart Button");
         }
@@ -41,6 +41,7 @@ public class ProductPage {
     }
     public void returnHome()
     {
+        WebElement Home = explicitWait(driver,homeLocator);
         Home.click();
     }
     public String alertMsg()

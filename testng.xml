@@ -3,8 +3,8 @@
 <suite name="DemoBlaze Automation" verbose="1" >
     <test name="DemoBlaze Automation" >
         <classes>
-            <class name="SignUpPageTest"/>
             <class name="HomePageTest"/>
+            <class name="SignUpPageTest"/>
             <class name="LoginPageTest"/>
             <class name="ProductPageTest"/>
             <class name="CartPageTest"/>

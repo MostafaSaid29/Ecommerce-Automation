@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -7,36 +8,28 @@ import org.openqa.selenium.support.PageFactory;
 import util.TestUtil;
 
 import static util.TestUtil.explicitWait;
+import static util.TestUtil.handleAlert;
 
 public class SignUpPage extends BaseClass {
     WebDriver driver;
-    @FindBy(id="sign-username")
-    WebElement usernameField;
-    @FindBy(id = "sign-password")
-    WebElement passwordField;
-    @FindBy(xpath = "//button[text()='Sign up']")
-    WebElement signUpBtn;
+    By usernameLocator = By.id("sign-username");
+    By passwordLocator = By.id("sign-password");
+    By signUpBtnLocator = By.xpath("//button[text()='Sign up']");
 
     public SignUpPage(WebDriver driver)
     {
         this.driver = driver;
-        PageFactory.initElements(driver,this);
     }
     public void setUserName(String username){
-        TestUtil.sendKeys(driver,usernameField,username);
+        TestUtil.sendKeys(driver,usernameLocator,username);
     }
     public void setPassword(String password){
-        TestUtil.sendKeys(driver,passwordField,password);
+        TestUtil.sendKeys(driver,passwordLocator,password);
     }
 
     public void clickSignUp(){
-        try{
-            explicitWait(driver,signUpBtn);
+            WebElement signUpBtn = explicitWait(driver,signUpBtnLocator);
             signUpBtn.click();
-        }catch (Exception e)
-        {
-            System.out.println("Couldn't find SignUpButton");
-        }
     }
     public void signUpSteps(String username, String password)
     {
@@ -46,6 +39,6 @@ public class SignUpPage extends BaseClass {
     }
     public String alertMsg()
     {
-        return TestUtil.handleAlert(driver);
+        return handleAlert(driver);
     }
 }

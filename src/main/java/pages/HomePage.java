@@ -1,4 +1,5 @@
 package pages;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,68 +9,65 @@ import static util.TestUtil.explicitWait;
 
 public class HomePage {
     WebDriver driver;
-    @FindBy(id = "signin2") WebElement signUp;
-    @FindBy(id = "login2") WebElement login;
-    @FindBy(partialLinkText = "Home") WebElement Home;
-    @FindBy(xpath = "//img[@src='Samsung1.jpg']") WebElement logo;
-    @FindBy(partialLinkText = "Phones") WebElement Phones;
-    @FindBy(partialLinkText = "Samsung galaxy s6") WebElement myPhone;
-    @FindBy(partialLinkText = "Laptops") WebElement Laptops;
-    @FindBy(partialLinkText = "Sony vaio i5") WebElement myLaptop;
-    @FindBy(partialLinkText = "Monitors") WebElement Monitors;
-    @FindBy(partialLinkText = "Apple monitor 24") WebElement myMonitor;
-    @FindBy(partialLinkText = "Cart") WebElement cart;
+    By signUpBtnLocator = By.id("signin2");
+    By loginBtnLocator = By.id("login2");
+    By logoLocator = By.xpath("//img[@src='Samsung1.jpg']");
+    By phonesLocator = By.partialLinkText("Phones");
+    By myPhoneLocator = By.partialLinkText("Samsung galaxy s6");
+    By laptopsLocator = By.partialLinkText("Laptops");
+    By myLaptopLocator = By.partialLinkText("Sony vaio i5");
+    By monitorsLocator = By.partialLinkText("Monitors");
+    By myMonitorLocator = By.partialLinkText("Apple monitor 24");
+    By cartBtnLocator = By.partialLinkText("Cart");
     public HomePage(WebDriver driver)
     {
         this.driver = driver;
-        PageFactory.initElements(driver,this);
     }
     public boolean validateHomePage()
     {
+        WebElement logo = explicitWait(driver,logoLocator);
         return logo.isDisplayed();
     }
     public SignUpPage goToSignUpPage()
     {
+        WebElement signUp = explicitWait(driver,signUpBtnLocator);
         signUp.click();
         return new SignUpPage(driver);
     }
     public LoginPage goToLoginPage()
     {
-        try{
-            explicitWait(driver,login);
-            login.click();
-        }catch(Exception e){
-            System.out.println("Couldn't find login Button");
-        }
+        WebElement logIn = explicitWait(driver,loginBtnLocator);
+        logIn.click();
         return new LoginPage(driver);
     }
     public ProductPage getPhone()
     {
-        explicitWait(driver,Phones);
+
+        WebElement Phones = explicitWait(driver,phonesLocator);
         Phones.click();
-        explicitWait(driver,myPhone);
+        WebElement myPhone = explicitWait(driver,myPhoneLocator);
         myPhone.click();
         return new ProductPage(driver);
     }
     public ProductPage getLaptop()
     {
-        explicitWait(driver,Laptops);
+        WebElement Laptops = explicitWait(driver,laptopsLocator);
         Laptops.click();
-        explicitWait(driver,myLaptop);
+        WebElement myLaptop = explicitWait(driver,myLaptopLocator);
         myLaptop.click();
         return new ProductPage(driver);
     }
     public ProductPage getMonitor()
     {
-        explicitWait(driver,Monitors);
+        WebElement Monitors = explicitWait(driver,monitorsLocator);
         Monitors.click();
-        explicitWait(driver,myMonitor);
+        WebElement myMonitor = explicitWait(driver,myMonitorLocator);
         myMonitor.click();
         return new ProductPage(driver);
     }
     public CartPage goToCartPage()
     {
-        explicitWait(driver,cart);
+        WebElement cart = explicitWait(driver,cartBtnLocator);
         cart.click();
         return new CartPage(driver);
     }

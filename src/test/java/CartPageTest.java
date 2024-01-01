@@ -3,13 +3,18 @@ import org.testng.annotations.Test;
 import pages.BaseClass;
 
 public class CartPageTest extends BaseClass {
-    @Test(priority = 1)
-    public void validTotalPrice()
-    {
-        cartPage = homePage.goToCartPage();
+   @Test
+   public void validProducts()
+   {
+       cartPage = homePage.goToCartPage();
+       Assert.assertEquals(cartPage.getProducts(),NumberOfProducts);
+   }
+    @Test(priority = 2)
+    public void validTotalPrice(){
+
         Assert.assertEquals(cartPage.getTotalPrice(),totalPrice);
     }
-    @Test(priority = 2)
+    @Test(priority = 3)
     public void purchase()  {
         cartPage.pressOrderBtn();
         cartPage.sendData("Test");
